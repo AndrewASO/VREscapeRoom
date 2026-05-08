@@ -30,9 +30,9 @@ public class NumPad : MonoBehaviour {
     //The audio that will play depending on the cues
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip inputSound;
-    [SerializeField] private AudioClip incorrectSound;
-    [SerializeField] private AudioClip correctSound;
+    [SerializeField] private AudioClip inputSound;          //https://pixabay.com/sound-effects/film-special-effects-single-keypad-beep-433456/
+    [SerializeField] private AudioClip incorrectSound;      //https://pixabay.com/sound-effects/film-special-effects-wrong-47985/
+    [SerializeField] private AudioClip correctSound;        //https://pixabay.com/sound-effects/technology-correct-472358/
 
     //Might not even need both of these, should only need correctCode to open doors / do an event
     //Can't think of a use for incorrectCode besides maybe give a hint or speed up time ? 
@@ -55,6 +55,7 @@ public class NumPad : MonoBehaviour {
     }
 
     public void PressDigit(string digit) {
+        PlaySound(inputSound);
         if(isChecking || unlocked) {
             return;
         }
