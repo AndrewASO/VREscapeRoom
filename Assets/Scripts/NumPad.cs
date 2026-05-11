@@ -73,13 +73,13 @@ public class NumPad : MonoBehaviour {
             unlocked = true;
 
             PlaySound(correctSound);
-            //onCorrectCode?Invoke();
+            onCorrectCode?.Invoke();     //Turns out this is going to be used for opening the doors
 
             StartCoroutine(FlashButtons(correctMaterial, correctFlashDura, false) );
         }
         else {
             PlaySound(incorrectSound);
-            //onIncorrectCode?Invoke();
+            //onIncorrectCode?.Invoke();
 
             StartCoroutine(FlashButtons(incorrectMaterial, incorrectFlashDura, true) );
         }

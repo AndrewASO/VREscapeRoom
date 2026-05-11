@@ -4,7 +4,7 @@ public class SeatFlip : MonoBehaviour {
 
     public Animator seatAnimator; 
 
-    public void flipBool() {
+    public void FlipBool() {
         bool seatBool = seatAnimator.GetBool("Flip");
         seatAnimator.SetBool("Flip", !seatBool);
     }
