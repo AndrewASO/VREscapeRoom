@@ -29,10 +29,13 @@ public class MapTimer : MonoBehaviour {
     public float ElapsedTime => elapsedTime;
 
     private void Start() {
-        StartTimer();
+        //StartTimer();
+        UpdateTimerText();
     }
 
     public void StartTimer() {
+        StopAllCoroutines();
+
         elapsedTime = 0f;
         nextAlarmTime = alarmEveryXSeconds;
         finalAlarmStarted = false;
@@ -40,7 +43,7 @@ public class MapTimer : MonoBehaviour {
 
         UpdateTimerText();
 
-        StartCoroutine(TimerRoutine() );
+        StartCoroutine(TimerRoutine()) ;
     }
 
     private IEnumerator TimerRoutine() {
@@ -81,4 +84,9 @@ public class MapTimer : MonoBehaviour {
 
         timerText.text = $"{minutes:0}:{seconds:00}";
     }
+
+    public void StopTimer() {
+        timerRunning = false;
+    }
+
 }
