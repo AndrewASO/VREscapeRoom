@@ -26,6 +26,9 @@ public class LightChanging : MonoBehaviour {
     public float alarmDura = 4f;
     public float flickerInterval = 0.15f;
 
+    [Header("Alarm Off Settings")]
+    public float alarmOffIntensity = 0f;
+
     [Header("Emission Material Detection")]
     public string emissionMaterialNameContains = "emissive";
     private readonly List<Light> allLights = new List<Light>();
@@ -169,11 +172,11 @@ public class LightChanging : MonoBehaviour {
             bool flashOn = Mathf.FloorToInt(timer / flickerInterval) % 2 == 0;
 
             if (flashOn) {
-                SetAllLights(alarmColor, alarmLightIntensity, true);
+                SetAllLights(alarmColor, alarmLightIntensity);
                 SetAllEmission(alarmEmissionColor, alarmEmissionStr);
             }
             else {
-                SetAllLights(Color.black, 0f, false);
+                SetAllLights(alarmColor, alarmOffIntensity);
                 SetAllEmission(Color.black, 0f);
             }
 
@@ -187,12 +190,12 @@ public class LightChanging : MonoBehaviour {
 
     private IEnumerator FinalAlarmRoutine() {
         while (true) {
-            SetAllLights(alarmColor, alarmLightIntensity, true);
+            SetAllLights(alarmColor, alarmLightIntensity);
             SetAllEmission(alarmEmissionColor, alarmEmissionStr);
 
             yield return new WaitForSeconds(flickerInterval);
 
-            SetAllLights(Color.black, 0f, false);
+            SetAllLights(alarmColor, alarmOffIntensity);
             SetAllEmission(Color.black, 0f);
 
             yield return new WaitForSeconds(flickerInterval);
@@ -202,15 +205,15 @@ public class LightChanging : MonoBehaviour {
     public void SetNormalMode() {
         if(finalAlarmActive) return;
 
-        SetAllLights(normaLightColor, normalLightIntensity, true);
+        SetAllLights(normaLightColor, normalLightIntensity);
         SetAllEmission(normalEmissionColor, normalEmissionStr);
     }
 
-    private void SetAllLights(Color color, float intensity, bool enabled) {
+    private void SetAllLights(Color color, float intensity) {
         foreach(Light light in allLights) {
             if(light == null) continue;
 
-            light.enabled = enabled;
+            light.enabled = true;
             light.color = color;
             light.intensity = intensity;
         }

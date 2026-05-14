@@ -7,6 +7,7 @@ public class IntroCutscene : MonoBehaviour {
     [Header("Train Intro Connections")]
     public MapTimer mapTimer;
     public VRScreenUI ui;
+    public MusicPlaying musicPlaying;
     //public TMP_Text introText;
     //public CanvasGroup blackScreen;
 
@@ -51,6 +52,12 @@ public class IntroCutscene : MonoBehaviour {
         ui.SetIntroText("Stop the train before it reaches the end of the line.");
 
         yield return new WaitForSeconds(lineDelay);
+        ui.SetIntroText("In the first level you'll have to solve a puzzle using your chair seats");
+
+        yield return new WaitForSeconds(lineDelay);
+        ui.SetIntroText("In the 2nd level you'll need to solve a puzzle relating to the food menu");
+
+        yield return new WaitForSeconds(lineDelay);
 
         if(ui != null) ui.HideIntroText();
 
@@ -58,13 +65,11 @@ public class IntroCutscene : MonoBehaviour {
             yield return StartCoroutine(ui.FadeBlack(0f, fadeOutTime) );
         }
 
-        if(metalScreech != null & metalScreech.loop){
-            metalScreech.Stop();
-        }
+        if(metalScreech != null) metalScreech.Stop();
 
-        if(mapTimer != null){
-            mapTimer.StartTimer();
-        }
+        if(mapTimer != null) mapTimer.StartTimer();
+        
+        if(musicPlaying != null) musicPlaying.StartMusic();
     }
 
 }

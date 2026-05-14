@@ -16,8 +16,10 @@ public class TrainStopped : MonoBehaviour {
     public float brakeDura = 4f;
     public float fadeDura = 1.5f;
 
-    private bool brakesHandled;
+    [Header("Ending Text")]
+    public string successText = "The brakes lock into place.\n\nThe train slows to a stop.\n\nYou survived!";
 
+    private bool brakesHandled;
 
     public void HandleBrakes(){
         if(brakesHandled) return;
@@ -53,8 +55,9 @@ public class TrainStopped : MonoBehaviour {
         yield return new WaitForSeconds(1f);
 
         if(ui != null){
+            ui.HideIntroText();
             yield return StartCoroutine(ui.FadeBlack(1f, fadeDura) );
-            ui.ShowSuccessMenu();
+            ui.SetIntroText(successText);
         }
     }
 }
