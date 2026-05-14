@@ -16,6 +16,11 @@ public class IntroCutscene : MonoBehaviour {
     public AudioSource alarm;
     public AudioSource metalScreech;
 
+    [Header("Audio Volume")]
+    [Range(0f, 1f)] public float rumbleVolume = 1f;
+    [Range(0f, 1f)] public float alarmVolume = 1f;
+    [Range(0f, 1f)] public float metalVolume = 1f;
+
     [Header("Timing")]
     public float firstLinedelay = 2f;
     public float lineDelay = 3f;
@@ -31,21 +36,21 @@ public class IntroCutscene : MonoBehaviour {
             ui.SetIntroText("");
         }
 
-        if(trainRumble != null) trainRumble.Play();
+        if(trainRumble != null) trainRumble.volume = rumbleVolume; trainRumble.Play();
 
         yield return new WaitForSeconds(firstLinedelay);
         ui.SetIntroText("You wake to the sound of the train shaking beneath you.");
 
         //Alarm Starts
         yield return new WaitForSeconds(lineDelay);
-        if(alarm != null) alarm.Play();
+        if(alarm != null) alarm.volume = alarmVolume; alarm.Play();
         ui.SetIntroText("An alarm blares through the car.");
 
         yield return new WaitForSeconds(lineDelay);
         ui.SetIntroText("You wake to the sound of the train shaking beneath you.");
 
         yield return new WaitForSeconds(lineDelay);
-        if(metalScreech != null) metalScreech.Play();
+        if(metalScreech != null) metalScreech.volume = metalVolume; metalScreech.Play();
         ui.SetIntroText("The train is out of control.");
 
         yield return new WaitForSeconds(lineDelay);
