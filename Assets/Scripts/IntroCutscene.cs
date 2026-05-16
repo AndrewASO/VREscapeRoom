@@ -30,6 +30,7 @@ public class IntroCutscene : MonoBehaviour {
         StartCoroutine(IntroRoutine() );
     }
 
+    //Plays the music & text for the intro cutscene
     IEnumerator IntroRoutine(){
         if(ui != null){
             ui.SetBlackInstant(1f);
@@ -70,6 +71,7 @@ public class IntroCutscene : MonoBehaviour {
             yield return StartCoroutine(ui.FadeBlack(0f, fadeOutTime) );
         }
 
+        //Disables all of the sounds at the end
         if(metalScreech != null) metalScreech.Stop();
 
         if(mapTimer != null) mapTimer.StartTimer();

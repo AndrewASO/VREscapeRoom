@@ -5,11 +5,9 @@ public class TrainCrash : MonoBehaviour {
     
     [Header("References")]
     public VRScreenUI ui;
-    //[SerializeField] private CanvasGroup blackScreen;
     
     [Header("Audio")]
     [SerializeField] private AudioSource crashSound;
-    //[SerializeField] private GameObject failMenu;
 
     [Header("Timing")]
     public float delayBeforeFade = 1f;
@@ -20,12 +18,14 @@ public class TrainCrash : MonoBehaviour {
 
     private bool hasCrashed;
 
+    //Checks if there was already a crash and if not then it starts CrashRoutine()
     public void StartCrash(){
         if(hasCrashed) return;
         hasCrashed = true;
         StartCoroutine( CrashRoutine() );
     }
 
+    //This starts the coroutine for crash
     private IEnumerator CrashRoutine(){
         if (crashSound != null) crashSound.Play();
 

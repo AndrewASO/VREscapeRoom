@@ -33,6 +33,8 @@ public class MapTimer : MonoBehaviour {
         UpdateTimerText();
     }
 
+
+    //This goes through and starts the timer with all of the variables being initialized to what they need to be
     public void StartTimer() {
         StopAllCoroutines();
 
@@ -46,6 +48,7 @@ public class MapTimer : MonoBehaviour {
         StartCoroutine(TimerRoutine()) ;
     }
 
+    //Coroutine and starts the timer in the background for the game
     private IEnumerator TimerRoutine() {
         while (timerRunning) {
             elapsedTime += Time.deltaTime;
@@ -74,6 +77,7 @@ public class MapTimer : MonoBehaviour {
         }
     }
 
+    //This updates the timer text 
     private void UpdateTimerText() {
         if(timerText == null) return;
 
@@ -85,6 +89,7 @@ public class MapTimer : MonoBehaviour {
         timerText.text = $"{minutes:0}:{seconds:00}";
     }
 
+    //Stops the timer when game is beaten
     public void StopTimer() {
         timerRunning = false;
     }

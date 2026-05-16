@@ -40,12 +40,14 @@ public class LightChanging : MonoBehaviour {
 
     private bool finalAlarmActive;
 
+    //This stores the information about the lightbulbs
     private class EmissionSlot {
         public Renderer renderer;
         public int materialIndex;
         public string colorPropertyName;
     }
 
+    //Wakes up and looks for the light & emission obj's
     private void Awake() {
         propertyBlock = new MaterialPropertyBlock();
 
@@ -57,6 +59,8 @@ public class LightChanging : MonoBehaviour {
         SetNormalMode();
     }
 
+    //This looks for all of the lamp lights by looking through all of the children of the parent lamp obj, and if its 
+    //a light child then it returns it to this list
     private void FindAllLampLights() {
         allLights.Clear();
 
@@ -72,6 +76,9 @@ public class LightChanging : MonoBehaviour {
         Debug.Log($"RoomLight found {allLights.Count} child lights");
     }
 
+    //Similar thing to FindAllLampLights(). Except its a bit trickier as the component has the emission. So we look through
+    //the children with Renderer then from there we check for anything that matches the name of emissive and if it does
+    //then we can grab it as we know that's responsible for the lightbulb colors from looking at it in the Unity editor
     private void FindAllEmissionMaterials() {
         emissionSlots.Clear();
 
@@ -89,20 +96,10 @@ public class LightChanging : MonoBehaviour {
                     if(material == null) continue;
 
                     bool nameMatches = material.name.ToLower().Contains(emissionMaterialNameContains.ToLower() );
-                    //bool hasEmissionColor = material.HasProperty("_EmissionColor");
 
                     if(!nameMatches) continue;
 
                     string colorProperty = GetBestColorProperty(material);
-
-                    
-                    //if(nameMatches && hasEmissionColor) {
-                    //    emissionSlots.Add(new EmissionSlot {
-                    //        renderer = renderer,
-                    //        materialIndex = i
-                    //    });
-                    //    break;
-                    //}
                     
 
                     if (string.IsNullOrEmpty(colorProperty)) {
@@ -122,6 +119,7 @@ public class LightChanging : MonoBehaviour {
         Debug.Log($"RoomLight found {emissionSlots.Count} emissive material slots");
     }
 
+    //Base c olor of mat
     private string GetBestColorProperty(Material material) {
         if(material.HasProperty("_EmissionColor") ) return "_EmissionColor";
         if(material.HasProperty("_BaseColor") ) return "_BaseColor";
@@ -129,6 +127,7 @@ public class LightChanging : MonoBehaviour {
         return null;
     }
 
+    //This starts the short coroutine of the alarm flash every 30s
     public void TriggerShortAlarmFlash() {
         if(finalAlarmActive) return;
 
@@ -139,6 +138,7 @@ public class LightChanging : MonoBehaviour {
         shortAlarmCoroutine = StartCoroutine(ShortAlarmRoutine() );
     }
 
+    //Begins the final alarm loop of just flashing red when the final countdown is reached
     public void BeginFinalAlarmLoop() {
         finalAlarmActive = true;
 
@@ -154,6 +154,7 @@ public class LightChanging : MonoBehaviour {
         finalAlarmCoroutine = StartCoroutine(FinalAlarmRoutine() );
     }
 
+    //This stops it and sets the lightbulbs & lights back to normal
     public void StopFinalAlarmLoop() {
        finalAlarmActive = false;
 
@@ -165,6 +166,7 @@ public class LightChanging : MonoBehaviour {
         SetNormalMode();
     }
 
+    //Coroutine for the short alarm routine
     private IEnumerator ShortAlarmRoutine() {
         float timer = 0f;
 
@@ -188,6 +190,7 @@ public class LightChanging : MonoBehaviour {
         shortAlarmCoroutine = null;
     }
 
+    //Coroutine for the final alarm routine
     private IEnumerator FinalAlarmRoutine() {
         while (true) {
             SetAllLights(alarmColor, alarmLightIntensity);
@@ -202,6 +205,7 @@ public class LightChanging : MonoBehaviour {
         }
     }
 
+    //Sets the emissive (light bulbs) and lights back to their default colors
     public void SetNormalMode() {
         if(finalAlarmActive) return;
 
@@ -209,6 +213,7 @@ public class LightChanging : MonoBehaviour {
         SetAllEmission(normalEmissionColor, normalEmissionStr);
     }
 
+    //Sets all of the lights to the color inputted along with its intensity
     private void SetAllLights(Color color, float intensity) {
         foreach(Light light in allLights) {
             if(light == null) continue;
@@ -219,6 +224,7 @@ public class LightChanging : MonoBehaviour {
         }
     }
 
+    //Same thing with SetAllLights except with strength for intensity
     private void SetAllEmission(Color color, float strength) {
         foreach(EmissionSlot slot in emissionSlots) {
             if(slot.renderer == null) continue;
